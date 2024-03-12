@@ -731,6 +731,10 @@ require("lazy").setup({
 		end,
 	},
 
+	-- GitHub Copilot Plugin
+	-- Configure with :Copilot setup
+	{ "github/copilot.vim" },
+
 	-- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
 	--    This is the easiest way to modularize your config.
 	--
