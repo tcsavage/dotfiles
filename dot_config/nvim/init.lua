@@ -731,6 +731,43 @@ require("lazy").setup({
 		end,
 	},
 
+	{
+		"nvim-neo-tree/neo-tree.nvim",
+		branch = "v3.x",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			-- "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"MunifTanjim/nui.nvim",
+			-- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+		},
+		config = function()
+			require("neo-tree").setup({
+				default_component_configs = {
+					icon = {
+						folder_closed = "[+]",
+						folder_open = "[-]",
+						folder_empty = "[.]",
+						default = "*",
+					},
+				},
+			})
+			vim.cmd([[nnoremap \ :Neotree toggle<cr>]])
+		end,
+	},
+
+	{
+		"NeogitOrg/neogit",
+		dependencies = {
+			"nvim-lua/plenary.nvim", -- required
+			"sindrets/diffview.nvim", -- optional - Diff integration
+
+			-- Only one of these is needed, not both.
+			"nvim-telescope/telescope.nvim", -- optional
+			-- "ibhagwan/fzf-lua",              -- optional
+		},
+		config = true,
+	},
+
 	-- GitHub Copilot Plugin
 	-- Configure with :Copilot setup
 	{ "github/copilot.vim" },
