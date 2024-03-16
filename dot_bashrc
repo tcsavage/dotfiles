@@ -1,0 +1,60 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# User specific aliases and functions
+if [ -d ~/.bashrc.d ]; then
+	for rc in ~/.bashrc.d/*; do
+		if [ -f "$rc" ]; then
+			. "$rc"
+		fi
+	done
+fi
+
+. "$HOME/.asdf/asdf.sh"
+. "$HOME/.asdf/completions/asdf.bash"
+
+export EDITOR=nvim
+
+# Helpers
+edd() {
+    # Edit directory. Opens the directory in nvim, using that as the working directory.
+    nvim -c ":cd ${1:-.}" -- "${1:-.}"
+}
+
+# Aliases
+# Programs
+alias e=$EDITOR
+alias k=kubectl
+alias eks=eksctl
+# Git commands
+alias gcl='git clone'
+alias gco='git checkout'
+alias gcm='git commit -m'
+alias gc='git commit'
+alias gs='git status'
+alias gu='git pull'
+alias gp='git push'
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias ga='git add'
+alias gg='git log --oneline --graph --decorate --all'
+# Directories
+alias ws='cd ~/workspace'
+alias wts='cd ~/workspace/github.com/tcsavage'
+alias wsg='cd ~/workspace/github.com/signal-ai'
+
+unset rc
