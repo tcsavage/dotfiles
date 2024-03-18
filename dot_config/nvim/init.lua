@@ -605,6 +605,8 @@ require("lazy").setup({
 					--  This will auto-import if your LSP supports it.
 					--  This will expand snippets if the LSP sent a snippet.
 					["<C-y>"] = cmp.mapping.confirm({ select = true }),
+					-- Also accept return key
+					["<CR>"] = cmp.mapping.confirm({ select = true }),
 
 					-- Manually trigger a completion from nvim-cmp.
 					--  Generally you don't need this, because nvim-cmp will display
@@ -780,18 +782,25 @@ require("lazy").setup({
 			local hop = require("hop")
 			hop.setup()
 			local directions = require("hop.hint").HintDirection
-			vim.keymap.set("", "f", function()
-				hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false })
+			vim.keymap.set("", "J", function()
+				hop.hint_anywhere()
 			end, { remap = true })
-			vim.keymap.set("", "F", function()
-				hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false })
+			vim.keymap.set("", "H", function()
+				hop.hint_char2()
 			end, { remap = true })
-			vim.keymap.set("", "t", function()
-				hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false, hint_offset = -1 })
-			end, { remap = true })
-			vim.keymap.set("", "T", function()
-				hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false, hint_offset = 1 })
-			end, { remap = true })
+			-- Override default f/F/t/T mappings
+			-- vim.keymap.set("", "f", function()
+			-- 	hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false })
+			-- end, { remap = true })
+			-- vim.keymap.set("", "F", function()
+			-- 	hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false })
+			-- end, { remap = true })
+			-- vim.keymap.set("", "t", function()
+			-- 	hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false, hint_offset = -1 })
+			-- end, { remap = true })
+			-- vim.keymap.set("", "T", function()
+			-- 	hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false, hint_offset = 1 })
+			-- end, { remap = true })
 		end,
 	},
 
