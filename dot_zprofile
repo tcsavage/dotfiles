@@ -26,15 +26,22 @@ if command -v register-python-argcomplete > /dev/null; then
     eval "$(register-python-argcomplete pipx)"
 fi
 
+# direnv
+if command -v direnv > /dev/null; then
+    eval "$(direnv hook zsh)"
+fi
+
 # Helpers
 edd() {
-    # Edit directory. Opens the directory in nvim, using that as the working directory.
-    nvim -c ":cd ${1:-.}" -- "${1:-.}"
+    # Edit directory. If no argument is given, edit the current directory.
+    # Will activate a Poetry virtual environment if one is found.
+    exec ~/.local/bin/edit_directory.sh "${1:-.}"
 }
 
 # Aliases
 # Programs
 alias e=$EDITOR
+alias ce='chezmoi edit --apply'
 alias k=kubectl
 alias eks=eksctl
 # Git commands
@@ -51,7 +58,7 @@ alias ga='git add'
 alias gg='git log --oneline --graph --decorate --all'
 # Directories
 alias ws='cd ~/workspace'
-alias wts='cd ~/workspace/signal-ai/tcsavage'
+alias wts='cd ~/workspace/github.com/tcsavage'
 alias wsg='cd ~/workspace/github.com/signal-ai'
 
 # If ~/.zprofile_extra exists, source it
