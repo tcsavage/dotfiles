@@ -31,15 +31,18 @@ export EDITOR=nvim
 
 # Helpers
 edd() {
-    # Edit directory. Opens the directory in nvim, using that as the working directory.
-    nvim -c ":cd ${1:-.}" -- "${1:-.}"
+    # Edit directory. If no argument is given, edit the current directory.
+    # Will activate a Poetry virtual environment if one is found.
+    ~/.local/bin/edit_directory.sh "${1:-.}"
 }
 
 # Aliases
 # Programs
 alias e=$EDITOR
+alias ce='chezmoi edit --apply'
 alias k=kubectl
 alias eks=eksctl
+alias txd='tmux new-session -A -s dev'
 # Git commands
 alias gcl='git clone'
 alias gco='git checkout'
