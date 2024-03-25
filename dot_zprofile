@@ -35,7 +35,7 @@ fi
 edd() {
     # Edit directory. If no argument is given, edit the current directory.
     # Will activate a Poetry virtual environment if one is found.
-    exec ~/.local/bin/edit_directory.sh "${1:-.}"
+    ~/.local/bin/edit_directory.sh "${1:-.}"
 }
 
 # Aliases
@@ -61,6 +61,8 @@ alias gg='git log --oneline --graph --decorate --all'
 alias ws='cd ~/workspace'
 alias wts='cd ~/workspace/github.com/tcsavage'
 alias wsg='cd ~/workspace/github.com/signal-ai'
+
+PROMPT='%F{green}%n%f:%F{cyan}%2~%f> '
 
 # If ~/.zprofile_extra exists, source it
 if [ -f ~/.zprofile_extra ]; then
