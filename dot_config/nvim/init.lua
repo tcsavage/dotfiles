@@ -5,7 +5,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Set to true if you have a Nerd Font installed
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -762,20 +762,20 @@ require("lazy").setup({
 		branch = "v3.x",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			-- "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 			"MunifTanjim/nui.nvim",
 			-- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
 		},
 		config = function()
 			require("neo-tree").setup({
-				default_component_configs = {
-					icon = {
-						folder_closed = "[+]",
-						folder_open = "[-]",
-						folder_empty = "[.]",
-						default = "*",
-					},
-				},
+				-- default_component_configs = {
+				-- 	icon = {
+				-- 		folder_closed = "[+]",
+				-- 		folder_open = "[-]",
+				-- 		folder_empty = "[.]",
+				-- 		default = "*",
+				-- 	},
+				-- },
 			})
 			vim.cmd([[nnoremap \ :Neotree toggle<cr>]])
 		end,
