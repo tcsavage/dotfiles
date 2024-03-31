@@ -846,6 +846,22 @@ require("lazy").setup({
 		},
 	},
 
+	-- Vim Slime
+	{
+		"jpalardy/vim-slime",
+		config = function()
+			vim.g.slime_target = "tmux"
+			-- Use Vim-style key_bindings
+			-- Default key bindingings <c-c><c-c> and <c-c>v are retained.
+			-- The mnemonic for my bindings is "g" for "go".
+			-- "s" is taken by search.
+			vim.keymap.set("x", "<leader>g", "<Plug>SlimeRegionSend")
+			vim.keymap.set("n", "<leader>g", "<Plug>SlimeMotionSend")
+			vim.keymap.set("n", "<leader>gp", "<Plug>SlimeParagraphSend")
+			vim.keymap.set("n", "<leader>gl", "<Plug>SlimeLineSend")
+		end,
+	},
+
 	-- GitHub Copilot Plugin
 	-- Configure with :Copilot setup
 	{ "github/copilot.vim" },
