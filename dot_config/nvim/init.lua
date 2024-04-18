@@ -762,7 +762,7 @@ require("lazy").setup({
 		branch = "v3.x",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			-- "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 			"MunifTanjim/nui.nvim",
 			-- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
 		},
@@ -848,6 +848,21 @@ require("lazy").setup({
 
 	-- Git Blame code lens
 	{ "f-person/git-blame.nvim" },
+	-- Vim Slime
+	{
+		"jpalardy/vim-slime",
+		config = function()
+			vim.g.slime_target = "tmux"
+			-- Use Vim-style key_bindings
+			-- Default key bindingings <c-c><c-c> and <c-c>v are retained.
+			-- The mnemonic for my bindings is "g" for "go".
+			-- "s" is taken by search.
+			vim.keymap.set("x", "<leader>g", "<Plug>SlimeRegionSend")
+			vim.keymap.set("n", "<leader>g", "<Plug>SlimeMotionSend")
+			vim.keymap.set("n", "<leader>gp", "<Plug>SlimeParagraphSend")
+			vim.keymap.set("n", "<leader>gl", "<Plug>SlimeLineSend")
+		end,
+	},
 
 	-- GitHub Copilot Plugin
 	-- Configure with :Copilot setup
