@@ -5,7 +5,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Set to true if you have a Nerd Font installed
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -768,14 +768,14 @@ require("lazy").setup({
 		},
 		config = function()
 			require("neo-tree").setup({
-				default_component_configs = {
-					icon = {
-						folder_closed = "[+]",
-						folder_open = "[-]",
-						folder_empty = "[.]",
-						default = "*",
-					},
-				},
+				-- default_component_configs = {
+				-- 	icon = {
+				-- 		folder_closed = "[+]",
+				-- 		folder_open = "[-]",
+				-- 		folder_empty = "[.]",
+				-- 		default = "*",
+				-- 	},
+				-- },
 			})
 			vim.cmd([[nnoremap \ :Neotree toggle<cr>]])
 		end,
@@ -845,6 +845,9 @@ require("lazy").setup({
 			{ "<c-\\>", "<cmd>TmuxNavigatePrevious<cr>" },
 		},
 	},
+
+	-- Git Blame code lens
+	{ "f-person/git-blame.nvim" },
 
 	-- GitHub Copilot Plugin
 	-- Configure with :Copilot setup
