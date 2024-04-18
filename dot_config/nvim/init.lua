@@ -201,6 +201,7 @@ require("lazy").setup({
 				["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
 				["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
 				["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
+				["<leader>t"] = { name = "[T]esting", _ = "which_key_ignore" },
 			})
 		end,
 	},
@@ -861,6 +862,46 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>g", "<Plug>SlimeMotionSend")
 			vim.keymap.set("n", "<leader>gp", "<Plug>SlimeParagraphSend")
 			vim.keymap.set("n", "<leader>gl", "<Plug>SlimeLineSend")
+		end,
+	},
+
+	{
+		"nvim-neotest/neotest",
+		dependencies = {
+			"nvim-neotest/nvim-nio",
+			"nvim-lua/plenary.nvim",
+			"antoinemadec/FixCursorHold.nvim",
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-neotest/neotest-python",
+		},
+		config = function()
+			require("neotest").setup({
+				adapters = {
+					require("neotest-python")({
+						-- Extra arguments for nvim-dap configuration
+						-- See https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for values
+						dap = { justMyCode = false },
+						-- args = {"--log-level", "DEBUG"},
+						runner = "pytest",
+					}),
+				},
+			})
+
+			vim.keymap.set("n", "<leader>ta", function()
+				require("neotest").run.run({ suite = true })
+			end, { desc = "Test [A]ll" })
+
+			vim.keymap.set("n", "<leader>tw", function()
+				require("neotest").watch.toggle(vim.fn.expand("%"))
+			end, { desc = "[W]atch files to test" })
+
+			vim.keymap.set("n", "<leader>tx", function()
+				require("neotest").run.stop()
+			end, { desc = "Stop tests" })
+
+			vim.keymap.set("n", "<leader>ts", function()
+				require("neotest").summary.toggle()
+			end, { desc = "Toggle Test [S]ummary" })
 		end,
 	},
 
