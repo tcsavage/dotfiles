@@ -1,0 +1,14 @@
+
+# Created by `pipx` on 2024-01-30 09:20:17
+# export PATH="$PATH:/Users/tom.savage/.local/bin"
+#
+# PROMPT='%F{green}%n%f:%F{cyan}%2~%f> '
+#
+# if [ -d "$HOME/.asdf" ]; then
+#     . "$HOME/.asdf/asdf.sh"
+#     # append completions to fpath
+#     fpath=(${ASDF_DIR}/completions $fpath)
+# fi
+
+source $HOME/.zprofile
+

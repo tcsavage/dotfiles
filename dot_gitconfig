@@ -1,0 +1,7 @@
+[user]
+	email = tcsavage@gmail.com
+	name = Tom Savage
+[pull]
+	rebase = false
+[init]
+	defaultBranch = main
