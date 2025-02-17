@@ -6,7 +6,7 @@ autoload -Uz compinit && compinit
 
 export EDITOR=nvim
 
-export PATH="$PATH:/$HOME/.local/bin"
+export PATH="$PATH:/$HOME/.local/bin:/$HOME/go/bin"
 
 # Homebrew
 if [ -d "/opt/homebrew" ]; then
@@ -67,5 +67,10 @@ PROMPT='%F{green}%n%f:%F{cyan}%2~%f> '
 # If ~/.zprofile_extra exists, source it
 if [ -f ~/.zprofile_extra ]; then
     source ~/.zprofile_extra
+fi
+
+# If fzf is installed, add hooks
+if command -v fzf > /dev/null; then
+    eval "$(fzf --zsh)"
 fi
 
