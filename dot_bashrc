@@ -55,6 +55,7 @@ alias gd='git diff'
 alias gdc='git diff --cached'
 alias ga='git add'
 alias gg='git log --oneline --graph --decorate --all'
+alias gsqb='git reset --soft $(git merge-base main HEAD)' # Squash all commits since main
 # Directories
 alias ws='cd ~/workspace'
 alias wts='cd ~/workspace/github.com/tcsavage'
