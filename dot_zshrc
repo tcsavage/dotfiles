@@ -76,3 +76,16 @@ fi
 if command -v fzf > /dev/null; then
     eval "$(fzf --zsh)"
 fi
+
+# If `~/workspace/github.com/tomtools/` exists, add it to the PATH
+if [ -d ~/workspace/github.com/tcsavage/tomtools/ ]; then
+    export PATH="$PATH:$HOME/workspace/github.com/tcsavage/tomtools/"
+fi
+
+# If `~/workspace/github.com/signal-ai/claude-code-playground/diagram-it/` exists, add it to the PATH
+if [ -d ~/workspace/github.com/signal-ai/claude-code-playground/diagram-it/ ]; then
+    export PATH="$PATH:$HOME/workspace/github.com/signal-ai/claude-code-playground/diagram-it/"
+fi
+
+export AITOOLS_BEDROCK_REGION="eu-central-1"
+export AITOOLS_BEDROCK_PROFILE="signal-research"

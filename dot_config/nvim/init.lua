@@ -195,13 +195,48 @@ require("lazy").setup({
 			require("which-key").setup()
 
 			-- Document existing key chains
-			require("which-key").register({
-				["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
-				["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
-				["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
-				["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
-				["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
-				["<leader>t"] = { name = "[T]esting", _ = "which_key_ignore" },
+			-- require("which-key").register({
+			require("which-key").add({
+				-- Old-style spec
+				-- ["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
+				-- ["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
+				-- ["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
+				-- ["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
+				-- ["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
+				-- ["<leader>t"] = { name = "[T]esting", _ = "which_key_ignore" },
+				-- New-style spec
+				-- { "<leader>c", group = "[C]ode" },
+				-- { "<leader>c_", hidden = true },
+				-- { "<leader>d", group = "[D]ocument" },
+				-- { "<leader>d_", hidden = true },
+				-- { "<leader>r", group = "[R]ename" },
+				-- { "<leader>r_", hidden = true },
+				-- { "<leader>s", group = "[S]earch" },
+				-- { "<leader>s_", hidden = true },
+				-- { "<leader>t", group = "[T]esting" },
+				-- { "<leader>t_", hidden = true },
+				-- { "<leader>w", group = "[W]orkspace" },
+				-- { "<leader>w_", hidden = true },
+				-- New new
+				-- { "", group = "[C]ode" },
+				-- { "", desc = "<leader>s_", hidden = true },
+				-- { "", group = "[S]earch" },
+				-- { "", group = "[T]esting" },
+				-- { "", desc = "<leader>t_", hidden = true },
+				-- { "", group = "[W]orkspace" },
+				-- { "", desc = "<leader>r_", hidden = true },
+				-- { "", desc = "<leader>d_", hidden = true },
+				-- { "", group = "[R]ename" },
+				-- { "", desc = "<leader>c_", hidden = true },
+				-- { "", group = "[D]ocument" },
+				-- { "", desc = "<leader>w_", hidden = true },
+				-- New new new
+				{ "<leader>c", group = "[C]ode" },
+				{ "<leader>d", group = "[D]ocument" },
+				{ "<leader>r", group = "[R]ename" },
+				{ "<leader>s", group = "[S]earch" },
+				{ "<leader>t", group = "[T]esting" },
+				{ "<leader>w", group = "[W]orkspace" },
 			})
 		end,
 	},
@@ -463,7 +498,7 @@ require("lazy").setup({
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
-				-- clangd = {},
+				clangd = {},
 				-- gopls = {},
 				pyright = {},
 				-- rust_analyzer = {},
@@ -515,6 +550,11 @@ require("lazy").setup({
 			-- You can add other tools here that you want Mason to install
 			-- for you, so that they are available from within Neovim.
 			local ensure_installed = vim.tbl_keys(servers or {})
+			-- Remove clangd from ensure_installed (which is a list)
+			local do_not_install = { "clangd" }
+			ensure_installed = vim.tbl_filter(function(server_name)
+				return not vim.tbl_contains(do_not_install, server_name)
+			end, ensure_installed)
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format lua code
 			})
@@ -532,6 +572,7 @@ require("lazy").setup({
 					end,
 				},
 			})
+			require("lspconfig").clangd.setup({})
 		end,
 	},
 
@@ -793,6 +834,9 @@ require("lazy").setup({
 			-- "ibhagwan/fzf-lua",              -- optional
 		},
 		config = true,
+		keys = {
+			{ "<leader>wg", "<cmd>Neogit<cr>", desc = "[W]orkspace [G]it" },
+		},
 	},
 
 	{
