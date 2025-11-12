@@ -1,0 +1,118 @@
+#!/usr/bin/env python3
+from pathlib import Path
+import subprocess
+import argparse
+import shutil
+
+
+def run_git(args, cwd: Path) -> str:
+    """Run a git command and return stdout (empty string on failure)."""
+    try:
+        result = subprocess.run(
+            ["git", *args],
+            cwd=cwd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
+            check=True,
+        )
+        return result.stdout.strip()
+    except subprocess.CalledProcessError:
+        return ""
+
+
+def is_git_repo(path: Path) -> bool:
+    return (path / ".git").is_dir()
+
+
+def has_uncommitted_changes(path: Path) -> bool:
+    return bool(run_git(["status", "--porcelain"], path))
+
+
+def get_unpushed_branches(path: Path) -> list[tuple[str, int]]:
+    """
+    Return a list of (branch, ahead_count) for branches with local commits not yet pushed.
+    Only considers commits that are ahead of the remote (ignores behind).
+    """
+    # Fetch remote refs silently for up-to-date comparison (optional)
+    run_git(["fetch", "--quiet", "--all"], path)
+
+    branches = run_git(
+        ["for-each-ref", "--format=%(refname:short)", "refs/heads"], path
+    )
+    if not branches:
+        return []
+
+    unpushed = []
+    for branch in branches.splitlines():
+        upstream = run_git(
+            ["rev-parse", "--abbrev-ref", f"{branch}@{{upstream}}"], path
+        )
+        if not upstream:
+            continue  # no upstream configured
+
+        ahead_behind = run_git(
+            ["rev-list", "--left-right", "--count", f"{branch}...{upstream}"], path
+        )
+        if not ahead_behind:
+            continue
+
+        behind, ahead = map(int, ahead_behind.split())
+        # 'behind' here means commits in branch not in upstream → local commits not yet pushed
+        if behind > 0:
+            unpushed.append((branch, behind))
+    return unpushed
+
+
+def delete_directory(path: Path, force: bool):
+    """Delete the given directory."""
+    if not force:
+        confirm = input(f"Delete clean directory '{path}'? [y/N]: ").strip().lower()
+        if confirm != "y":
+            print(f"Skipped {path}")
+            return
+    shutil.rmtree(path)
+    print(f"Deleted {path}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Check git repos in subdirectories.")
+    parser.add_argument(
+        "--delete-clean",
+        action="store_true",
+        help="Delete directories that are fully clean (no changes, no unpushed commits).",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Do not prompt before deleting clean directories.",
+    )
+    args = parser.parse_args()
+
+    cwd = Path.cwd()
+    for subdir in cwd.iterdir():
+        if not subdir.is_dir() or not is_git_repo(subdir):
+            print(f"{subdir.name}: not a git repository")
+            continue
+
+        dirty = has_uncommitted_changes(subdir)
+        unpushed_branches = get_unpushed_branches(subdir)
+
+        if dirty or unpushed_branches:
+            parts = []
+            if dirty:
+                parts.append("DIRTY")
+            if unpushed_branches:
+                branch_info = ", ".join(
+                    f"{name} (+{ahead})" for name, ahead in unpushed_branches
+                )
+                parts.append(f"UNPUSHED [{branch_info}]")
+            print(f"{subdir.name}: {', '.join(parts)}")
+        else:
+            print(f"{subdir.name}: clean")
+            if args.delete_clean:
+                delete_directory(subdir, args.force)
+
+
+if __name__ == "__main__":
+    main()

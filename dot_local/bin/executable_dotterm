@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+exec dot \
+-Tpng \
+-Gfontname="JetBrains Mono NL:style=Regular" \
+-Nfontname="JetBrains Mono NL:style=Regular" \
+-Efontname="JetBrains Mono NL:style=Regular" \
+-Gbgcolor=transparent \
+-Ncolor=white \
+-Ecolor=white \
+-Nfontcolor=white \
+-Efontcolor=white

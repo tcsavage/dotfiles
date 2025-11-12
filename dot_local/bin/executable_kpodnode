@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Get both pod location and node labels in one flow
+POD_NAME=$1
+NAMESPACE=${2:-default}
+NODE=$(kubectl get pod $POD_NAME -n $NAMESPACE -o jsonpath='{.spec.nodeName}')
+echo "Pod: $POD_NAME"
+echo "Node: $NODE"
+echo "Node Labels:"
+kubectl get node $NODE -o jsonpath='{.metadata.labels}' | jq .
